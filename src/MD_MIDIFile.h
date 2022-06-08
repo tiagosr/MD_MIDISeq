@@ -384,6 +384,7 @@ http://www.stephenhobley.com/blog/2011/03/14/the-last-darned-midi-interface-ill-
 
 #include <Arduino.h>
 #include <SdFat.h>
+#include "TR_ProgMemAsFile.h"
 
 /**
  * \file
@@ -444,10 +445,11 @@ http://www.stephenhobley.com/blog/2011/03/14/the-last-darned-midi-interface-ill-
  - SD_FAT_TYPE = 1 for FAT16/FAT32,
  - SD_FAT_TYPE = 2 for exFAT,
  - SD_FAT_TYPE = 3 for FAT16/FAT32/exFAT.
+ - SD_FAT_TYPE = 255 for PROGMEM :)
 
  The library and application code should use the typedefs SDFAT, SDFILE, SDDIR
  */
-#define SD_FAT_TYPE 0
+#define SD_FAT_TYPE 255
 #endif
 
 // ------------- Configuration Section - END
@@ -480,6 +482,10 @@ typedef ExFile SDFILE;    ///< File type for files
 typedef SdFs SDFAT;       ///< SDFat class used
 typedef FsFile SDDIR;     ///< File type for folders
 typedef FsFile SDFILE;    ///< File type for files
+#elif SD_FAT_TYPE == 255  // PROGMEM
+typedef ProgMemFs SDFAT;    ///< SDFat class used
+typedef ProgMemFile SDDIR;  ///< File type for folders
+typedef ProgMemFile SDFILE; ///< File type for files
 #else  
 #error invalid definition for SD_FAT_TYPE
 #endif  // SD_FAT_TYPE
